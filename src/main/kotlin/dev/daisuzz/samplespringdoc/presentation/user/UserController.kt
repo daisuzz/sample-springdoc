@@ -3,6 +3,7 @@ package dev.daisuzz.samplespringdoc.presentation.user
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -57,7 +58,7 @@ class UserController {
             ApiResponse(responseCode = "400", description = "リクエストに含まれるユーザ情報に不備がある場合")
         ]
     )
-    fun createUser(@RequestBody userRequest: UserRequest): ResponseEntity<String> {
+    fun createUser(@Valid @RequestBody userRequest: UserRequest): ResponseEntity<String> {
         return ResponseEntity.ok().build()
     }
 
