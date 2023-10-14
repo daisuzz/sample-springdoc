@@ -1,6 +1,7 @@
 package dev.daisuzz.samplespringdoc.presentation.user
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -20,7 +21,13 @@ import org.springframework.web.bind.annotation.RestController
 class UserController {
 
     @GetMapping
-    @Operation(summary = "ユーザ一覧取得API", description = "全ユーザを取得する。")
+    @Operation(
+        summary = "ユーザ一覧取得API",
+        description = "全ユーザを取得する。",
+        responses = [
+            ApiResponse(responseCode = "200", description = "ユーザ一覧を取得できた場合")
+        ]
+    )
     fun getUsers(): List<UserResponse> {
         return listOf(
             UserResponse(
@@ -45,7 +52,7 @@ class UserController {
             ApiResponse(responseCode = "404", description = "存在しないユーザが指定された場合")
         ]
     )
-    fun getUser(@PathVariable userId: String): UserResponse {
+    fun getUser(@Parameter(description = "ユーザID") @PathVariable userId: String): UserResponse {
         return UserResponse("1", "Alice", 20)
     }
 
@@ -71,7 +78,7 @@ class UserController {
             ApiResponse(responseCode = "404", description = "存在しないユーザが指定された場合")
         ]
     )
-    fun deleteUser(@PathVariable userId: String): ResponseEntity<String> {
+    fun deleteUser(@Parameter(description = "ユーザID") @PathVariable userId: String): ResponseEntity<String> {
         return ResponseEntity.ok().build()
     }
 }
