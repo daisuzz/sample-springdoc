@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
+    id("org.openapi.generator") version "7.0.1"
 }
 
 group = "dev.daisuzz"
@@ -37,4 +38,13 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+openApiGenerate {
+    generatorName.set("kotlin")
+    inputSpec.set("${layout.buildDirectory.get()}/openapi.json")
+    outputDir.set("${layout.buildDirectory.get()}/kotlin")
+    apiPackage.set("dev.daisuzz.api")
+    invokerPackage.set("dev.daisuzz.invoker")
+    modelPackage.set("dev.daisuzz.model")
 }
