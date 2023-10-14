@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class CartController {
 
     @GetMapping
-    @Operation(summary = "カート一覧取得API", description = "カート覧取得API")
+    @Operation(summary = "カート一覧取得API", description = "カート一覧取得API")
     fun getCarts(): List<CartResponse> {
         return listOf(
             CartResponse(
