@@ -2,7 +2,7 @@ package dev.daisuzz.samplespringdoc.component.error
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-data class ErrorResponse(
+data class SystemErrorResponse(
     @Schema(description = "エラーメッセージ", example = "入力エラー")
     val message: String,
 

@@ -1,6 +1,7 @@
 package dev.daisuzz.samplespringdoc.component.openapi
 
-import dev.daisuzz.samplespringdoc.component.error.ErrorResponse
+import dev.daisuzz.samplespringdoc.component.error.ClientErrorResponse
+import dev.daisuzz.samplespringdoc.component.error.SystemErrorResponse
 import io.swagger.v3.core.converter.ModelConverters
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.media.Content
@@ -12,26 +13,32 @@ import org.springdoc.core.customizers.OpenApiCustomizer
 class ErrorResponseOpenApiCustomizer : OpenApiCustomizer {
     override fun customise(openApi: OpenAPI) {
         // componentsにErrorResponseのSchemaを追加
-        openApi.components.schemas.putAll(ModelConverters.getInstance().read(ErrorResponse::class.java))
+        openApi.components.schemas.putAll(ModelConverters.getInstance().read(ClientErrorResponse::class.java))
+        openApi.components.schemas.putAll(ModelConverters.getInstance().read(SystemErrorResponse::class.java))
 
         // 各エンドポイントのoperationにErrorResponseへのrefを追加
-        val errorResponse = buildErrorResponse()
+        val clientErrorResponse = buildErrorResponse<ClientErrorResponse>("クライアントエラー")
+        val systemErrorResponse = buildErrorResponse<SystemErrorResponse>("システムエラー")
         openApi.paths.values
             .flatMap { it.readOperations() }
-            .map { it.responses.addApiResponse("400", errorResponse) }
+            .map {
+                it.responses
+                    .addApiResponse("4xx", clientErrorResponse)
+                    .addApiResponse("5xx", systemErrorResponse)
+            }
     }
 
-    private fun buildErrorResponse(): ApiResponse {
+    private inline fun <reified T> buildErrorResponse(description: String): ApiResponse {
         return ApiResponse()
-            .description("エラーレスポンス")
+            .description(description)
             .content(
                 Content()
                     .addMediaType(
                         "application/json",
                         MediaType()
                             .schema(
-                                Schema<ErrorResponse>()
-                                    .`$ref`("#/components/schemas/${ErrorResponse::class.simpleName}")
+                                Schema<T>()
+                                    .`$ref`("#/components/schemas/${T::class.simpleName}")
                             )
                     )
             )
