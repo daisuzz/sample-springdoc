@@ -1,5 +1,6 @@
 package dev.daisuzz.samplespringdoc.presentation.user
 
+import dev.daisuzz.samplespringdoc.component.annotation.ErrorCodes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -24,6 +25,7 @@ class UserController {
         summary = "ユーザ一覧取得API",
         description = "全ユーザを取得する。",
     )
+    @ErrorCodes(["ERROR_00001", "ERROR_00002", "ERROR_00003"])
     fun getUsers(): List<UserResponse> {
         return listOf(
             UserResponse(
