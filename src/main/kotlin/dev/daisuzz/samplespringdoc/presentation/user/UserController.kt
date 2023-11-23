@@ -1,6 +1,6 @@
 package dev.daisuzz.samplespringdoc.presentation.user
 
-import dev.daisuzz.samplespringdoc.component.annotation.ErrorCodes
+import dev.daisuzz.samplespringdoc.component.openapi.annotation.ErrorCodes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag

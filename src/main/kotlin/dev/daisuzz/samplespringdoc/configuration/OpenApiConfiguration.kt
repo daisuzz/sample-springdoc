@@ -1,15 +1,19 @@
 package dev.daisuzz.samplespringdoc.configuration
 
-import dev.daisuzz.samplespringdoc.component.openapi.ErrorCodesAnnotationOperationCustomizer
 import dev.daisuzz.samplespringdoc.component.openapi.ErrorResponseOpenApiCustomizer
+import dev.daisuzz.samplespringdoc.component.openapi.OperationHandlerMethodOperationCustomizer
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.method.HandlerMethod
+import java.util.concurrent.ConcurrentHashMap
 
 @Configuration
 class OpenApiConfiguration {
+
+    private val operationHandlerMethods = ConcurrentHashMap<String, HandlerMethod>()
 
     @Bean
     fun openApi(): OpenAPI {
@@ -24,11 +28,11 @@ class OpenApiConfiguration {
 
     @Bean
     fun errorResponseOpenApiCustomizer(): ErrorResponseOpenApiCustomizer {
-        return ErrorResponseOpenApiCustomizer()
+        return ErrorResponseOpenApiCustomizer(operationHandlerMethods)
     }
 
     @Bean
-    fun customAnnotationOperationCustomizer(): OperationCustomizer {
-        return ErrorCodesAnnotationOperationCustomizer()
+    fun operationHandlerMethodOperationCustomizer(): OperationCustomizer {
+        return OperationHandlerMethodOperationCustomizer(operationHandlerMethods)
     }
 }
