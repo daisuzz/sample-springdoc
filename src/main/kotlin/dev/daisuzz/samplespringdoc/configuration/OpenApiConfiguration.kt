@@ -1,10 +1,14 @@
 package dev.daisuzz.samplespringdoc.configuration
 
+import dev.daisuzz.samplespringdoc.component.openapi.CustomAnnotationParameterCustomizer
+import dev.daisuzz.samplespringdoc.component.openapi.CustomAnnotationPropertyCustomizer
 import dev.daisuzz.samplespringdoc.component.openapi.ErrorResponseOpenApiCustomizer
 import dev.daisuzz.samplespringdoc.component.openapi.OperationHandlerMethodOperationCustomizer
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import org.springdoc.core.customizers.OperationCustomizer
+import org.springdoc.core.customizers.ParameterCustomizer
+import org.springdoc.core.customizers.PropertyCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.HandlerMethod
@@ -35,4 +39,15 @@ class OpenApiConfiguration {
     fun operationHandlerMethodOperationCustomizer(): OperationCustomizer {
         return OperationHandlerMethodOperationCustomizer(operationHandlerMethods)
     }
+
+    @Bean
+    fun customAnnotationParameterCustomizer(): ParameterCustomizer {
+        return CustomAnnotationParameterCustomizer()
+    }
+
+    @Bean
+    fun customAnnotationPropertyCustomizer(): PropertyCustomizer {
+        return CustomAnnotationPropertyCustomizer()
+    }
+
 }

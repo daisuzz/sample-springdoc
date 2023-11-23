@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.hibernate.validator.constraints.CodePointLength
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -46,7 +47,11 @@ class UserController {
         summary = "ユーザ取得API",
         description = "指定されたユーザIDに紐づくユーザを取得する。",
     )
-    fun getUser(@Parameter(description = "ユーザID") @PathVariable userId: String): UserResponse {
+    fun getUser(
+        @Parameter(description = "ユーザID")
+        @PathVariable
+        @CodePointLength(min = 0, max = 10) userId: String
+    ): UserResponse {
         return UserResponse("1", "Alice", 20)
     }
 
